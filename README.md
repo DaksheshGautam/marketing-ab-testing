@@ -14,7 +14,7 @@ The dataset contains **588,101 users**: 564,577 in the ad group and 23,524 in th
 4. **Explore patterns:** examine frequency, weekday and hour with denominators and uncertainty; apply Holm correction across 31 exploratory weekday/hour tests and examine treatment interactions.
 5. **Connect evidence to decisions:** estimate conditional incrementality, illustrate margin/CPM break-even scenarios, and build a prospective sample-size simulator.
 
-[Full SQL investigation](marketing/output/pdf/Marketing_AB_Queries_and_Investigation.pdf) | [Executed SQL](marketing/src/investigation.sql) | [Query outputs](marketing/output/queries)
+[Full SQL investigation](marketing/output/pdf/Marketing_AB_Queries_and_Investigation.pdf) | [Executed SQL](marketing/src/investigation.sql)
 
 ## Findings
 
@@ -65,7 +65,6 @@ The dataset lacks assignment logs, intended allocation, experiment dates, conver
 
 - [Analysis report](marketing/output/pdf/Marketing_AB_Deep_Analysis_Report.pdf): 15 pages of investigation, findings, business implications, limitations and final-dashboard documentation.
 - [Queries and investigation](marketing/output/pdf/Marketing_AB_Queries_and_Investigation.pdf): 42 pages containing complete SQL, outputs, interpretations, statistical formulas and simulator DAX.
-- [Editable Power BI project](marketing/output/powerbi/Marketing%20Experiment%20v4.pbip): keep its adjacent Report and SemanticModel folders.
 - [Python analysis](marketing/src/analyze.py), [DAX measures](marketing/src/dashboard_measures.dax), [validation checks](marketing/src/validate.py) and [simulator checks](marketing/src/validate_simulator.py).
 - [Project guide](marketing/README.md): input ranges, dashboard behavior, assumptions and reproduction details.
 
@@ -78,12 +77,13 @@ Download the original CSV from [Favio Vazquez's Marketing A/B Testing dataset on
 ```bash
 python -m pip install -r marketing/requirements.txt
 python marketing/src/analyze.py
-python marketing/src/dashboard_v4.py
 python marketing/src/report.py
 python marketing/src/validate.py
 python marketing/src/validate_simulator.py
 ```
 
-Raw user-level records are acquired separately; derived aggregates, query outputs and final artifacts are included. The supplied PBIX embeds aggregate data without user IDs and opens without a Kaggle connection. A regenerated PBIP requires a table refresh before saving as PBIX. Report generation uses the included final-export preview images.
+Raw user-level records are acquired separately; derived aggregates, query outputs and final artifacts are included. The supplied PBIX embeds aggregate data without user IDs and opens without a Kaggle connection. Report generation uses the included final-export preview images.
 
 Final dashboard aligned to the approved export on **02 November 2026**. The dataset remains attributed to its original publisher.
+
+Generated Power BI project definitions, templates, intermediate JSON/CSV outputs and duplicate assets are omitted from this portfolio repository. The analysis script regenerates the intermediate files needed by the report and validation scripts.

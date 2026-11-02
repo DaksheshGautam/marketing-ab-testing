@@ -8,3 +8,7 @@ marketing/data/*.csv
 marketing/data/*.sqlite
 marketing/data/*.zip
 marketing/output/*.zip
+marketing/output/*.json
+marketing/output/*.csv
+marketing/output/queries/
+marketing/output/powerbi/*.csv

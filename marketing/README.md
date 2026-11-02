@@ -22,7 +22,6 @@ Relative lift is 43.0851%. The primary two-sided pooled proportion test gives p 
 - [Final dashboard export](output/pdf/Marketing_AB_Dashboard_Final.pdf) - the approved five-page visual snapshot.
 - [Analysis report](output/pdf/Marketing_AB_Deep_Analysis_Report.pdf) - 15 pages of results, business implications, limitations and final-dashboard documentation.
 - [Queries and investigation](output/pdf/Marketing_AB_Queries_and_Investigation.pdf) - 42 pages with complete SQL, returned results, formulas, interpretations and simulator DAX.
-- [Editable Power BI project](output/powerbi/Marketing%20Experiment%20v4.pbip) - retain its adjacent Report and SemanticModel folders.
 
 ## Dashboard pages
 
@@ -80,14 +79,15 @@ Use Python 3.12+ and install `marketing/requirements.txt` from the repository ro
 ```bash
 python -m pip install -r marketing/requirements.txt
 python marketing/src/analyze.py
-python marketing/src/dashboard_v4.py
 python marketing/src/report.py
 python marketing/src/validate.py
 python marketing/src/validate_simulator.py
 ```
 
-The report uses the checked-in final-export preview images. The statistical pipeline creates cleaned records and SQLite tables locally, executes SQL and saves complete query outputs. The dashboard builder uses bundled templates and embedded aggregates; it does not call Kaggle. When opening a regenerated PBIP, refresh its tables before saving as PBIX. Regeneration overwrites generated definitions, so preserve manual Power BI edits separately.
+The report uses the checked-in final-export preview images. The statistical pipeline creates cleaned records and SQLite tables locally, executes SQL and saves complete query outputs. Generated JSON, CSV and SQLite outputs are created locally by the analysis script and are excluded from GitHub. The finished PBIX contains the dashboard and its embedded aggregate data.
 
-The supplied PBIX already contains data. The PDF is a static export and cannot operate slicers. No automatic Kaggle refresh is configured. See `output/final_release.json` for the approved export and PBIX hashes and `output/validation.json` for checks.
+The supplied PBIX already contains data. The PDF is a static export and cannot operate slicers. No automatic Kaggle refresh is configured. Run the validation scripts to check totals and planning calculations.
 
 Final dashboard alignment: **02 November 2026**. Statistical analysis originally prepared 01 November 2026. Dataset attribution remains with the original publisher; the public repository includes aggregates and derived outputs, with raw records acquired from Kaggle separately.
+
+Generated Power BI project definitions, templates, intermediate JSON/CSV outputs and duplicate assets are omitted from this portfolio repository. The analysis script regenerates the intermediate files needed by the report and validation scripts.

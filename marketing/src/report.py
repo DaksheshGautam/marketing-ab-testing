@@ -1,6 +1,6 @@
 """Create the in-depth report and the complete investigation PDF."""
 import sys,pathlib,json,math,textwrap
-ROOT=pathlib.Path(__file__).resolve().parents[2];P=ROOT/'marketing';O=P/'output';T=P/'tmp'
+ROOT=pathlib.Path(__file__).resolve().parents[2];P=ROOT/'marketing';O=P/'output';T=P/'tmp';T.mkdir(parents=True,exist_ok=True)
 # Use the active Python environment; see requirements.txt.
 import pandas as pd
 import numpy as np
@@ -157,7 +157,7 @@ page('11 / Prospective power and a better next trial',[
 page('12 / Decision, limitations and reproducibility',[
  table([['Decision area','Evidence-supported conclusion','Next action'],['Conversion efficacy','Positive full-cohort ad-versus-PSA difference','Validate assignment and measurement'],['Campaign scale','Economic return is not observed','Obtain CPM and contribution margin'],['Frequency optimization','Exposure-associated conversion patterns','Randomize cap policies'],['Scheduling optimization','Peak-context patterns and uncertainty','Randomize schedule policies'],['Data quality','No missing or duplicate users in this file','Audit eligibility and logging upstream']],[112,205,194]),
  p('Material limitations','Heading2'),p('No experiment dates, assignment logs, prespecified allocation, conversion window, costs, revenue, baseline covariates, demographic segments or operational guardrails are supplied. No historical stability or long-term effect can be established. User-level independence, valid assignment and comparable measurement remain assumptions.'),
- p('Reproduce the work','Heading2'),p('Run marketing/src/analyze.py, then marketing/src/report.py and marketing/src/dashboard_v4.py from the repository root. The raw download is preserved. Cleaned records, SQLite tables, executed SQL, all query outputs, segment statistics, economic scenarios, sample-size plans, seeds and dashboard aggregates accompany the report. The dashboard uses an embedded aggregate snapshot and does not refresh directly from Kaggle.'),
+ p('Reproduce the work','Heading2'),p('Run marketing/src/analyze.py, then marketing/src/report.py from the repository root. The raw download is preserved. Cleaned records, SQLite tables, executed SQL, all query outputs, segment statistics, economic scenarios, sample-size plans, seeds and dashboard aggregates accompany the report. The dashboard uses an embedded aggregate snapshot and does not refresh directly from Kaggle.'),
  p('Source and method references','Heading2'),
  p('<link href="https://www.kaggle.com/datasets/faviovaz/marketing-ab-testing">Kaggle / Favio Vazquez: Marketing A/B Testing</link>','Small'),
  p('<link href="https://www.itl.nist.gov/div898/handbook/prc/section2/prc241.htm">NIST: Wilson and related proportion confidence intervals</link>','Small'),
@@ -225,13 +225,19 @@ work += [PageBreak(),p('26 / Final dashboard simulator audit','Heading1'),
  table([['Changed input','Expected total users'],['None / defaults','47,014'],['Power 90%','62,938'],['Target relative lift 40%','12,798'],['Ad allocation 96%','315,650'],['Baseline conversion 2%','42,218']],[320,191]),
  p('Formula audit','Heading2'),p('For p0, relative lift L, power W and ad share a: p1=p0*(1+L), r=a/(1-a), pooled=(p0+r*p1)/(1+r). Compute PSA n by the prospective formula in investigation 25 with z(W) replacing z(.8). Ad n=ceil(r*PSA n), total=PSA n+ad n. Ceiling is applied separately to the two arm counts.'),
  p('Exact native DAX','Heading2')]
-model=json.loads((O/'powerbi/Marketing Experiment v4.SemanticModel/model.bim').read_text())
-for m in model['model']['tables'][0]['measures']:
+dax=(P/'src/dashboard_measures.dax').read_text()
+measures=[]
+for block in dax.split('-- Table: '):
+    if '\n' in block and ' = ' in block:
+        definition=block.split('\n',1)[1].strip()
+        name,expression=definition.split(' = ',1)
+        measures.append({'name':name,'expression':expression})
+for m in measures:
     if m['name'] in ['Required PSA users','Required ad users','Required experiment users','Curve total users']:
         if m['name']=='Curve total users':work += [PageBreak(),p('27 / Simulator sensitivity and interpretation','Heading1')]
         code='\n'.join(m['expression']) if isinstance(m['expression'],list) else m['expression']
         code='\n'.join('\n'.join(textwrap.wrap(line,width=91,replace_whitespace=False,drop_whitespace=False)) for line in code.splitlines())
         work += [p(m['name'],'Heading2'),Preformatted(code,ParagraphStyle('DAX',fontName='Courier',fontSize=8,leading=11)),Spacer(1,8)]
-work += [p('Final exposure-page interpretation','Heading2'),p('The page labels frequency patterns as observational, removes subgroup-lift and average-frequency cards, and calls for randomized frequency-cap trials. Statistical primary results are unchanged. The final dashboard, PBIX, source model, report and SQL workbook are versioned together.')]
+work += [p('Final exposure-page interpretation','Heading2'),p('The page labels frequency patterns as observational, removes subgroup-lift and average-frequency cards, and calls for randomized frequency-cap trials. Statistical primary results are unchanged. The final dashboard, PBIX, measure definitions, report and SQL workbook are versioned together.')]
 build('Marketing_AB_Queries_and_Investigation.pdf',work)
 print('Created in-depth analysis report and complete investigation workbook.')

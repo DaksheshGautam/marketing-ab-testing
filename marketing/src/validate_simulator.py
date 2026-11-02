@@ -17,7 +17,6 @@ for inputs,expected in checks:
     assert actual==expected,(inputs,actual,expected)
     print(inputs or 'defaults',actual)
 root=Path(__file__).resolve().parents[2]
-model=json.loads((root/'marketing/output/powerbi/Marketing Experiment v4.SemanticModel/model.bim').read_text())
-names={t['name'] for t in model['model']['tables']}
-assert {'Baseline','Target lift','Power','Ad allocation','Lift curve'}<=names
+dax=(root/'marketing/src/dashboard_measures.dax').read_text()
+assert all(name in dax for name in ['Baseline[Value]',"'Target lift'[Value]",'Power[Value]',"'Ad allocation'[Value]"])
 print('Validated all four simulator inputs and five reference scenarios.')
