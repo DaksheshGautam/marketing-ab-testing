@@ -1,0 +1,26 @@
+{
+  "final_export": "pdf/Marketing_AB_Dashboard_Final.pdf",
+  "export_sha256": "3fff2a64b13fcb949238fc4ee045579fa5ebb5f67bde2af783d9a2f43e099151",
+  "pbix": "powerbi/Marketing Experiment v4.pbix",
+  "pbix_sha256": "5a501331a75bc458af1b49e704105ddf988d96e63df231e43d9cbed01553c27e",
+  "aligned_on": "2026-11-02",
+  "dashboard_pages": 5,
+  "analysis_pages": 15,
+  "investigation_pages": 42,
+  "status": "Final user-supplied export matches v4 report pages, planning defaults and primary effect estimates",
+  "defaults": {
+    "baseline": 0.018,
+    "relative_lift": 0.2,
+    "power": 0.8,
+    "ad_allocation": 0.5,
+    "alpha_two_sided": 0.05,
+    "psa_users": 23507,
+    "ad_users": 23507,
+    "total_users": 47014
+  },
+  "report_sha256": {
+    "Marketing_AB_Dashboard_Final.pdf": "3fff2a64b13fcb949238fc4ee045579fa5ebb5f67bde2af783d9a2f43e099151",
+    "Marketing_AB_Deep_Analysis_Report.pdf": "4c67346c12b45ebd9e996684b4a10fb6651ffd9b7fee5f6202d10d9e74b8d702",
+    "Marketing_AB_Queries_and_Investigation.pdf": "1fb310a76e82c12a4b3aa997c8597c763cde6b4a8a762f5aa9a853be1fd7423d"
+  }
+}

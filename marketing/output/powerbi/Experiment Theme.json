@@ -1,0 +1,12 @@
+{
+  "name": "Experiment",
+  "dataColors": [
+    "#168C92",
+    "#E59B45",
+    "#65758B",
+    "#B96D77"
+  ],
+  "background": "#F3F6F8",
+  "foreground": "#17324D",
+  "tableAccent": "#168C92"
+}

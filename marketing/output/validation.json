@@ -1,0 +1,21 @@
+{
+  "dataset": "faviovaz/marketing-ab-testing",
+  "users": 588101,
+  "conversions": 14843,
+  "excluded_rows": 0,
+  "pdf_pages": {
+    "analysis": 15,
+    "investigation": 42,
+    "dashboard": 5
+  },
+  "dashboard_pages": 5,
+  "sql_python_cube_totals": "matched",
+  "pdf_text_bounds": "passed after final update",
+  "dashboard_visual_review": "all five pages reviewed; paragraph-free layouts",
+  "interaction_check": "native design inputs and dynamic sample-size results checked",
+  "primary_ci": "Newcombe hybrid Wilson",
+  "primary_p_value": 1.7052807161559727e-13,
+  "final_export_alignment": "user-supplied final export matches Power BI v4",
+  "simulator_reference_scenarios": "5/5 passed",
+  "updated_on": "2026-11-02"
+}

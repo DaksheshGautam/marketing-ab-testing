@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pbi/
+.env
+.venv/
+marketing/tmp/
+marketing/data/*.csv
+marketing/data/*.sqlite
+marketing/data/*.zip
+marketing/output/*.zip

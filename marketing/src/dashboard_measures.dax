@@ -1,0 +1,145 @@
+-- Table: Experiment
+Users = SUM(Experiment[Users count])
+
+-- Table: Experiment
+Conversions = SUM(Experiment[Conversions count])
+
+-- Table: Experiment
+Impressions = SUM(Experiment[Impressions count])
+
+-- Table: Experiment
+Conversion rate = DIVIDE([Conversions],[Users])
+
+-- Table: Experiment
+Ads per user = DIVIDE([Impressions],[Users])
+
+-- Table: Experiment
+PSA rate = CALCULATE([Conversion rate],REMOVEFILTERS(Experiment[Variant]),Experiment[Variant]="A | PSA control")
+
+-- Table: Experiment
+Ad rate = CALCULATE([Conversion rate],REMOVEFILTERS(Experiment[Variant]),Experiment[Variant]="B | Product ads")
+
+-- Table: Experiment
+PSA users = CALCULATE([Users],REMOVEFILTERS(Experiment[Variant]),Experiment[Variant]="A | PSA control")
+
+-- Table: Experiment
+Ad users = CALCULATE([Users],REMOVEFILTERS(Experiment[Variant]),Experiment[Variant]="B | Product ads")
+
+-- Table: Experiment
+Lift pp = IF([PSA users]>0 && [Ad users]>0,100*([Ad rate]-[PSA rate]))
+
+-- Table: Experiment
+Relative lift = DIVIDE([Ad rate]-[PSA rate],[PSA rate])
+
+-- Table: Experiment
+Modeled incremental conversions = [Ad users]*([Ad rate]-[PSA rate])
+
+-- Table: Experiment
+Total impressions, full cohort = CALCULATE([Impressions],REMOVEFILTERS(Experiment))
+
+-- Table: Experiment
+Full cohort p-value = 1.705280716155973e-13
+
+-- Table: Experiment
+Full cohort risk ratio = 1.430850640222258
+
+-- Table: Experiment
+Full cohort lower lift pp = 0.5873422353060636
+
+-- Table: Experiment
+Full cohort upper lift pp = 0.9360028811460754
+
+-- Table: Experiment
+Full cohort incremental low = 3315.999171823915
+
+-- Table: Experiment
+Full cohort incremental high = 5284.456986288078
+
+-- Table: Experiment
+Full cohort lift pp = 0.7692453192201517
+
+-- Table: Experiment
+Full cohort relative lift = 0.4308506402222583
+
+-- Table: Experiment
+Full cohort incremental conversions = 4342.982145893556
+
+-- Table: Experiment
+Balanced plan users = 47406
+
+-- Table: Experiment
+Holdout plan users = 318275
+
+-- Table: Experiment
+Planning target pp = 0.35708212888964463
+
+-- Table: Experiment
+Planning power = 0.8
+
+-- Table: Experiment
+Planning alpha = 0.05
+
+-- Table: Experiment
+Planning baseline = 0.01785410644448223
+
+-- Table: Experiment
+Missing values = 0
+
+-- Table: Experiment
+Duplicate users = 0
+
+-- Table: Experiment
+Excluded users = 0
+
+-- Table: Experiment
+Holdout share = 0.04
+
+-- Table: Experiment
+PSA variance share = 0.9441517970281729
+
+-- Table: Experiment
+Fisher exact p = 1.0470720577954195e-14
+
+-- Table: Experiment
+Illustrative break-even CPM = 7.747190157488119
+
+-- Table: Experiment
+Required PSA users = VAR p0=SELECTEDVALUE(Baseline[Value],0.018)
+VAR lift=SELECTEDVALUE('Target lift'[Value],0.20)
+VAR pw=SELECTEDVALUE(Power[Value],0.80)
+VAR a=SELECTEDVALUE('Ad allocation'[Value],0.50)
+VAR p1=p0*(1+lift)
+VAR r=DIVIDE(a,1-a)
+VAR pb=DIVIDE(p0+r*p1,1+r)
+VAR za=NORM.S.INV(0.975)
+VAR zb=NORM.S.INV(pw)
+VAR n0=ROUNDUP(DIVIDE(POWER(za*SQRT((1+1/r)*pb*(1-pb))+zb*SQRT(p0*(1-p0)+p1*(1-p1)/r),2),POWER(p1-p0,2)),0)
+RETURN IF(p1<1,n0)
+
+-- Table: Experiment
+Required ad users = ROUNDUP([Required PSA users]*DIVIDE(SELECTEDVALUE('Ad allocation'[Value],0.5),1-SELECTEDVALUE('Ad allocation'[Value],0.5)),0)
+
+-- Table: Experiment
+Required experiment users = [Required PSA users]+[Required ad users]
+
+-- Table: Experiment
+Curve total users = VAR p0=SELECTEDVALUE(Baseline[Value],0.018)
+VAR lift=SELECTEDVALUE('Lift curve'[Value],0.20)
+VAR pw=SELECTEDVALUE(Power[Value],0.80)
+VAR a=SELECTEDVALUE('Ad allocation'[Value],0.50)
+VAR p1=p0*(1+lift)
+VAR r=DIVIDE(a,1-a)
+VAR pb=DIVIDE(p0+r*p1,1+r)
+VAR za=NORM.S.INV(0.975)
+VAR zb=NORM.S.INV(pw)
+VAR n0=ROUNDUP(DIVIDE(POWER(za*SQRT((1+1/r)*pb*(1-pb))+zb*SQRT(p0*(1-p0)+p1*(1-p1)/r),2),POWER(p1-p0,2)),0)
+RETURN IF(p1<1,n0+ROUNDUP(n0*r,0))
+
+-- Table: Planning
+Required total users = SUM(Planning[Total users])
+
+-- Table: Evidence
+95% interval = 1
+
+-- Table: Evidence
+Estimate = IF(ABS(SELECTEDVALUE(Evidence[Lift pp])-0.7692453192201517)<0.0000001,1,BLANK())
